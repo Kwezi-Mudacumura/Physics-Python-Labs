@@ -1,0 +1,30 @@
+GlowScript 3.1 VPython
+#initialisation
+star1 = sphere(pos=vector(0,0,0),radius=1.5e10,color=color.yellow)#earth
+star2 = sphere(pos=vector(1.5e11,0,0),radius=1.5e10,color=color.orange)#sun
+star2.M=2e30
+star1.M=2e30
+G=6.67e-11
+star1.p = star1.M*vector(0,sqrt(G*star2.M/mag(star1.pos-star2.pos)),0)
+#earth.v=vector(0,sqrt(G*sun.M/mag(earth.pos-sun.pos)),0)
+star2.p = star2.M*vector(0,0,0)
+#sun.v=vector(0,sqrt(G*earth.M/mag(earth.pos - sun.pos)),0)
+t=0;
+dt = 24*3600
+star1.trail=curve(pos=star1.pos,color=star1.color)
+star2.trail = curve(pos=star2.pos,color = star2.color)
+#scene.autoscale = 1
+
+while t < 1000*dt:
+  R = star1.pos -star2.pos
+  magR = mag(R)
+  force = -G*star2.M*star1.M*R/magR**3
+  star1.p += force*dt
+  star2force = -(force)
+  star2.p+= star2force*dt
+  star2.pos += (star2.p/star2.M)*dt
+  star1.pos += (star1.p/star1.M)*dt
+  t += dt
+  star1.trail.append(pos=star1.pos)
+  star2.trail.append(pos = star2.pos)
+  rate(50)

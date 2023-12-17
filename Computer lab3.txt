@@ -1,0 +1,38 @@
+GlowScript 3.1 VPython
+## objects
+ball = sphere(pos=vector(-5,0,0),radius=0.5,color=color.cyan)
+wallR = box(pos=vector(6,0,0),size=vector(0.2,12,12),color = color.green)
+wallL = box(pos=vector(-6,0,0),size=vector(0.2,12,12),color = color.green)
+wallT =box(pos=vector(0,6,0),size=vector(12,0.2,12),color = color.green)
+wallB =box(pos=vector(0,-6,0),size=vector(12,0.2,12),color = color.green)
+wallO = box(pos=vector(0,0,-6),size=vector(12,12,0.2),color = color.green)
+## initial objects
+ball.velocity = vector(25,5,15)
+deltat = 0.005
+t =0
+##calculations 
+vscale=0.1
+varr = arrow(pos=ball.pos,axis=ball.velocity*vscale,color=color.yellow)
+scene.autoscale =0
+attach_trail(ball,color=ball.color)
+while t < 3:
+  rate(100)
+  
+  if (ball.pos.x > (wallR.pos.x-ball.radius) ) or  (ball.pos.x < (wallL.pos.x+ball.radius)):
+    ball.velocity.x = -ball.velocity.x
+    varr.axis = ball.velocity*vscale
+  if (ball.pos.y<(wallB.pos.y+ball.radius) ) or  (ball.pos.y > (wallT.pos.y-ball.radius)):
+    ball.velocity.y = -ball.velocity.y
+    ##varr.axis = ball.velocity*vscale
+  if (ball.pos.z<(wallO.pos.z+ball.radius) ) or  (ball.pos.z >((-(wallO.pos.z)-ball.radius))):
+    ball.velocity.z = -ball.velocity.z
+    ##varr.axis = ball.velocity*vscale  
+  ball.pos = ball.pos + ball.velocity*deltat;
+  varr.pos = ball.pos
+  
+  t = t+deltat
+  
+
+  
+
+
